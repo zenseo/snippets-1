@@ -1,9 +1,9 @@
 # snippets
 snippets
  
-##js
+###js
 
-###скролл
+#####скролл
 http://jscrollpane.kelvinluck.com/ - кастомный скролл
-###Выпадающий списко
+#####Выпадающий списко
 http://silviomoreto.github.io/bootstrap-select/ - бутстрап выпадающий список
