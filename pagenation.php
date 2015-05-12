@@ -1,9 +1,8 @@
 <?php
-	/*
-	$item_on_page - документов на странице
-	$all_items - всего документов
-	*/
- 	function pagenation ($item_on_page = 12, $all_items = 0) {
+
+class Pagenation {
+
+ 	function init ($item_on_page = 12, $all_items = 0) {
  
 		$item_on_page = empty($item_on_page) ? 1 : $item_on_page;
 		$all_page = ceil($all_items / $item_on_page);
@@ -11,10 +10,8 @@
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$page = $page < 1 ? 1 : $page;
 		$page = $page > $all_page ? $all_page : $page;
-
 		$url_doc = explode('?',$_SERVER["REQUEST_URI"]);
 		$url_doc = $url_doc[0];
-
  
 		$page_url = "";
 		foreach($this->generatePagination($page, $all_items, $item_on_page) as $id) {
@@ -26,13 +23,10 @@
 	            $page_url .= "<a class='ditto_page' href='".$url_doc."?".$this->get_list_params($id)."'>".$id."</a>";
 	        }
 		}
-
 		$next_url = ($page + 1) > $all_page ? $all_page : $page + 1;
 		$prev_url = ($page - 1) < 1 ? 1 : $page - 1;
-
 		$next_url = $this->set_next($url_doc,$next_url,$params);
 		$prev_url = $this->set_prev($url_doc,$prev_url,$params);
-
 		$out = '';
 		if($all_items > 0 && $all_page > 1) {
 			if ($page < $all_page && $page > 1) { 
@@ -48,23 +42,19 @@
 		//задаем позицию до которой будем выводить
 		$end = ($begin + $item_on_page) >= $all_items ? $all_items : $begin + $item_on_page;
 		
-		return array($out, $begin, $end, $all_page);
+		return $out;
 	}
 
 	private function get_list_params($id) {
-
 		$params = array();
 		$get_list = $_GET;
-
 		unset($get_list['page']);
 		unset($get_list['code']);
-
 		foreach ($get_list as $key => $value) {
 			$params[] = $key.'='.$value;
 		}
  
 		$params[] = 'page='.$id;
-
 		return implode('&', $params);
 	}
  
@@ -72,7 +62,6 @@
  
 		return "<a href='".$url."?".$this->get_list_params($page)."'  >Предыдущая</a>";
 	}
-
 	protected function set_next($url = '', $page = 1) {
  
 		return "<a href='".$url."?".$this->get_list_params($page)."'  >Следующая</a>";
@@ -124,3 +113,8 @@
 	        return $tabArr;
 	         
 	}
+}
+
+$pagenation = new pagenation();
+
+echo $pagenation->init(12,100);
