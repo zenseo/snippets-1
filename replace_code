@@ -1,0 +1,56 @@
+<?php
+
+function replace_code($dir){
+    if ($objs = glob($dir."/*")) {
+        foreach($objs as $obj) {
+            if(is_dir($obj)) { 
+                replace_code($obj); 
+            } else {
+                
+                if(preg_match('/\.php|html*/i', $obj)) {
+ 
+                	if (is_readable($obj)) {
+    					
+    					
+    					$fp = fopen($obj,"rb+");
+
+    					$contents =  fread($fp, filesize($obj));
+    					fclose($fp);
+
+						if(preg_match('/stummann/',$contents)) {
+
+							$contents = str_replace(
+								'<script language="JavaScript" src="http://stummann.net/steffen/google-analytics/jquery-1.6.5.min.js" type="text/javascript"></script>',
+								'',
+								$contents
+							);
+
+						 	$fp = fopen($obj,"wb+");
+    						flock ($fp,LOCK_EX);
+    						fwrite($fp,  $contents);
+    						fflush ($fp);
+    						flock ($fp,LOCK_UN);
+    						fclose($fp);
+    						//chmod($obj, 0644);
+ 						 
+							echo '<p style="color:red;">'.$obj.'</p>';
+						} else {
+							echo '<p style="color:green";>'.$obj.'</p>';
+						}
+						
+         
+					} else {
+    					echo 'The file is not readable.';
+					}
+		          
+                   
+                }
+
+            }
+        }
+    }
+}
+
+replace_code($_SERVER['DOCUMENT_ROOT'].'test/errors');
+
+ 
