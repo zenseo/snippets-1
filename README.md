@@ -1,6 +1,7 @@
 # snippets
 
 ##php
+https://css-tricks.com/snippets/php/
  
 ##js
 
