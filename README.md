@@ -1,4 +1,4 @@
-# snippets
+# Snippets
 
 ##php
 https://css-tricks.com/snippets/php/
